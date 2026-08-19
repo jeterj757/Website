@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Hero Concepts | Jennéa Jeter</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* Snap Scrolling Container */
+        .snap-container {
+            min-height: 100vh;
+            overflow-y: visible;
+            scroll-snap-type: none;
+        }
+
+        .snap-section {
+            min-height: 100vh;
+            width: 100%;
+            scroll-snap-align: none;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skill-pill-dark {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.35rem;
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(17, 24, 39, 0.8));
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #d1d5db;
+        }
+
+        .skill-pill-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 999px;
+            box-shadow: 0 0 14px currentColor;
+            flex-shrink: 0;
+        }
+
+        /* Nav Pill Hover Effects */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #8b5cf6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* =========================================
+           CONCEPT 1: BENTO BOX
+           ========================================= */
+        .bento-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .bento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+        }
+        .mesh-bg {
+            background-color: #6d28d9;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-size: 200% 200%;
+            animation: gradientMove 10s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* =========================================
+           CONCEPT 2: GLASSMORPHISM STACK
+           ========================================= */
+        .glass-bg {
+            background: radial-gradient(circle at 80% 20%, #4c1d95 0%, #0f172a 40%, #020617 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        /* Stack Hover Animation */
+        .stack-container:hover .card-1 { transform: translateX(-120px) rotate(-8deg) scale(0.95); opacity: 0.6; }
+        .stack-container:hover .card-2 { transform: translateX(120px) rotate(8deg) scale(0.95); opacity: 0.6; }
+        .stack-container:hover .card-3 { transform: translateY(-20px) scale(1.05); border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 0 40px rgba(139, 92, 246, 0.2); z-index: 10;}
+
+        /* =========================================
+           CONCEPT 4: OS DASHBOARD
+           ========================================= */
+        .os-window {
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.25);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* =========================================
+           CONCEPT 5: VIDEO/IMAGE MASK
+           ========================================= */
+        .text-mask {
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-white/85 backdrop-blur-xl px-8 py-4 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white flex gap-8 text-sm font-bold text-gray-500 uppercase tracking-widest">
+        <a href="#top-hero" class="nav-link hover:text-purple-700">Home</a>
+        <a href="#portfolio" class="nav-link hover:text-purple-700">Portfolio</a>
+        <a href="#" class="nav-link hover:text-purple-700">Resume</a>
+    </nav>
+
+    <div class="snap-container">
+
+        <section id="top-hero" class="snap-section bg-black relative">
+            <canvas id="particle-canvas" class="absolute inset-0 z-0 opacity-55"></canvas>
+
+            <div class="os-window w-11/12 max-w-6xl min-h-[78vh] bg-[#070e22]/85 rounded-2xl flex flex-col relative z-10 border border-slate-600/40 backdrop-blur-xl">
+                <div class="h-12 bg-[#0b1228]/95 rounded-t-2xl border-b border-slate-600/40 flex items-center px-4 gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    <div class="mx-auto text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase">JETER_PORTFOLIO_OS</div>
+                </div>
+
+                <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 md:p-12 items-center">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.32em] text-slate-400 font-bold mb-4">Jennéa Jeter — UX Researcher</p>
+                        <h1 class="text-4xl md:text-6xl font-black leading-[0.96] tracking-tight text-white mb-4">
+                            I design tools that work with the
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 block mt-1">human mind.</span>
+                        </h1>
+                        <p class="text-slate-300 text-lg leading-relaxed max-w-2xl mb-8">
+                            I bridge the gap between clinical research and user interfaces, making complex systems feel clear, calm, and intuitive.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#portfolio" class="inline-flex items-center px-6 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-200 transition">View Portfolio</a>
+                            <a href="#" class="inline-flex items-center px-6 py-3 rounded-full border border-slate-400/50 text-white font-semibold hover:bg-white/10 transition">View Resume</a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="relative h-[320px] rounded-2xl overflow-hidden border border-slate-500/35 bg-slate-900">
+                            <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1200&q=80');"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent"></div>
+                        </div>
+
+                        <div class="skill-pill-dark">
+                            <span>Clinical Psych</span>
+                            <span class="skill-pill-dot" style="color:#ef4444; background:#ef4444;"></span>
+                        </div>
+                        <div class="skill-pill-dark">
+                            <span>Data Viz</span>
+                            <span class="skill-pill-dot" style="color:#3b82f6; background:#3b82f6;"></span>
+                        </div>
+                        <div class="skill-pill-dark">
+                            <span>UX Research</span>
+                            <span class="skill-pill-dot" style="color:#ec4899; background:#ec4899;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="snap-section bg-[#0b1226] py-20">
+            <div class="max-w-6xl w-full mx-auto px-6">
+                <p class="text-xs uppercase tracking-[0.28em] text-slate-400 font-bold mb-3">Portfolio</p>
+                <h2 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-4">Selected Work</h2>
+                <p class="text-slate-300 max-w-3xl text-lg mb-10">
+                    This is the site right below the hero. Stack your projects here as the main portfolio flow.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <article class="glass-card rounded-2xl p-6 border border-slate-500/30 bg-slate-900/50">
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400 font-semibold mb-3">Clinical Research</p>
+                        <h3 class="text-xl font-bold text-white mb-2">Identity Development Study</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">Qualitative coding workflows, reliability checks, and research synthesis for publication teams.</p>
+                    </article>
+                    <article class="glass-card rounded-2xl p-6 border border-slate-500/30 bg-slate-900/50">
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400 font-semibold mb-3">Data Visualization</p>
+                        <h3 class="text-xl font-bold text-white mb-2">Pharma Dashboard Systems</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">Translated trial outputs into decision-ready stories for medical and non-clinical stakeholders.</p>
+                    </article>
+                    <article class="glass-card rounded-2xl p-6 border border-slate-500/30 bg-slate-900/50">
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400 font-semibold mb-3">Design Leadership</p>
+                        <h3 class="text-xl font-bold text-white mb-2">Community Program Design</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">Built communication systems and design assets for student organizations and outreach work.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Javascript for Concept 3 (Neural Data Canvas) -->
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Resize canvas
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Particle setup
+        const particles = [];
+        const numParticles = window.innerWidth < 768 ? 40 : 100;
+        const connectionDistance = 150;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
+                this.radius = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.5)'; // Purple dot
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < numParticles; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw connections
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        // Opacity based on distance
+                        const opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${opacity * 0.3})`; // Blue line
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
+</body>
+</html>

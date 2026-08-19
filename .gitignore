@@ -1,0 +1,35 @@
+# macOS and editor-local files
+.DS_Store
+**/.DS_Store
+.vscode/
+
+# Local test and backup artifacts
+test-results/
+*.bak
+3_19 Fixes .txt
+Screenshot*.png
+
+# Private/source working materials not needed by the public site
+Classes/
+TournamentInfo/
+Me/*
+!Me/HTML Links and Embeds.txt
+!Me/BB@TCNJ 3 Qs Codebook.xlsx
+Papers/*.docx
+Papers/Jennea Jeter _ Statement of Purpose.pdf
+Me/Transcript_JENNEAJETER.pdf
+
+# Internal notes and source lists
+Lions Gaming and Delta IG.txt
+Queen 2025 - Top Player ScoutSheet _ Rank Explainer.txt
+
+# Full-resolution video sources; public pages use web versions
+uploads/Resilience-Camp-IMG-1157.mp4
+uploads/Resilience-Camp-IMG-1225.mp4
+uploads/Resilience-Camp-IMG-1239.mp4
+
+# Design/audit screenshots not used by the live site
+uploads/homepage-desktop-reference-2026-08-19.png
+uploads/site-desktop-before-2026-08-19.png
+uploads/imm-class-of-2026-website-preview.png
+uploads/imm-class-of-2026-website-preview-clean.png

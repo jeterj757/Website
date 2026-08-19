@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Text Resources — Jennéa Jeter</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .txt-shell { padding-top: 1.25rem; padding-bottom: 3rem; }
+        .txt-title { margin: 0 0 0.35rem; font-family: var(--font-head); font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text-main); }
+        .txt-sub { margin: 0 0 1rem; color: var(--text-sub); font-size: 0.92rem; }
+        .txt-grid { display: grid; gap: 0.9rem; }
+        .txt-card {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(30,58,95,0.12);
+            border-radius: 12px;
+            padding: 0.9rem;
+        }
+        body.dark-mode .txt-card {
+            background: rgba(37,37,37,0.9);
+            border-color: rgba(255,255,255,0.14);
+        }
+        .txt-card h3 {
+            margin: 0 0 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+        .txt-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+        .txt-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 0.65rem;
+            align-items: start;
+        }
+        .txt-list a {
+            color: var(--text-main);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            font-size: 0.88rem;
+        }
+        .txt-list a:hover { opacity: 0.8; }
+        .txt-meta {
+            font-size: 0.74rem;
+            color: var(--text-sub);
+            font-family: 'Inter', sans-serif;
+            white-space: normal;
+            text-align: right;
+        }
+        .txt-meta-line { display: block; }
+    </style>
+</head>
+<body>
+    <div class="nav-sticky">
+        <nav class="main-nav">
+            <div class="logo">
+                <h1><a href="index.html" class="logo-home-link">JENNÉA JETER</a></h1>
+                <div class="logo-subtitle">B.S. in Interactive Multimedia &amp; Psychology</div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-actions">
+                    <a aria-label='Home' class='icon-tile' href='index.html' style='text-decoration:none;' title='Home'>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M3.5 11.2 12 4l8.5 7.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.8 10.5V20h10.4v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.1 20v-5h3.8v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <button class="icon-tile icon-email" onclick="copyEmail()" title="Contact" aria-label="Copy contact email">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 8l9 6 9-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="icon-tile icon-settings" onclick="toggleSettings()" title="Open Settings" aria-label="Open Settings">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0 .262 1.081 1.402 1.588 2.387 1.062 1.6-.854 3.368.914 2.514 2.514-.526.985-.019 2.125 1.062 2.387 1.756.426 1.756 2.924 0 3.35-1.081.262-1.588 1.402-1.062 2.387.854 1.6-.914 3.368-2.514 2.514-.985-.526-2.125-.019-2.387 1.062-.426 1.756-2.924 1.756-3.35 0-.262-1.081-1.402-1.588-2.387-1.062-1.6.854-3.368-.914-2.514-2.514.526-.985.019-2.125-1.062-2.387-1.756-.426-1.756-2.924 0-3.35 1.081-.262 1.588-1.402 1.062-2.387-.854-1.6.914-3.368 2.514-2.514.985.526 2.125.019 2.387-1.062Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.8"/></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-row">
+            <div class="settings-label">Theme</div>
+            <div class="settings-theme-group" role="group" aria-label="Theme selection">
+                <button class="settings-theme-option" data-theme-option="light" onclick="setThemeMode('light')" aria-label="Light theme" title="Light theme">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+                <button class="settings-theme-option" data-theme-option="dark" onclick="setThemeMode('dark')" aria-label="Dark theme" title="Dark theme">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M21 14.2A9 9 0 1 1 9.8 3c-.1.4-.1.9-.1 1.3a8 8 0 0 0 8 8c.4 0 .9 0 1.3-.1Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container txt-shell">
+        <h2 class="txt-title">Text File Links</h2>
+        <p class="txt-sub">Direct links to all `.txt` files used in this site repository.</p>
+
+        <section class="txt-grid">
+            <article class="txt-card">
+                <h3>Root</h3>
+                <ul class="txt-list">
+                    <li><a href="3_19 Fixes .txt" target="_blank" rel="noopener">3_19 Fixes .txt</a></li>
+                </ul>
+            </article>
+
+            <article class="txt-card">
+                <h3>Me</h3>
+                <ul class="txt-list">
+                    <li><a href="Me/HTML Links and Embeds.txt" target="_blank" rel="noopener">HTML Links and Embeds.txt</a></li>
+                    <li><a href="Me/JenneaJeter_Resume.txt" target="_blank" rel="noopener">JenneaJeter_Resume.txt</a></li>
+                    <li><a href="Me/JennéaJeter_Resume_Fall2025.txt" target="_blank" rel="noopener">JennéaJeter_Resume_Fall2025.txt</a></li>
+                    <li><a href="Me/Recent appearances.txt" target="_blank" rel="noopener">Recent appearances.txt</a></li>
+                </ul>
+            </article>
+
+            <article class="txt-card">
+                <h3>Tournament Info</h3>
+                <ul class="txt-list">
+                    <li class="txt-row"><a href="TournamentInfo/King 2023 Exit Survey (Responses).txt">King 2023 Exit Survey (Responses).txt</a><span class="txt-meta">Feedback avg: 4–5/5</span></li>
+                    <li class="txt-row"><a href="TournamentInfo/King 2024 Main Spreadsheet.txt">King 2024 Main Spreadsheet.txt</a><span class="txt-meta">Progress: 100% · Attendance: 79.09% (108 signups)</span></li>
+                    <li class="txt-row"><a href="TournamentInfo/King 2025 Main Spreadsheet.txt">King 2025 Main Spreadsheet.txt</a><span class="txt-meta"><span class="txt-meta-line">Final: 110</span><span class="txt-meta-line">Expected: 120</span><span class="txt-meta-line">Attendance: 84.5%</span></span></li>
+                    <li class="txt-row"><a href="TournamentInfo/Queen 2024 Main Spreadsheet.txt">Queen 2024 Main Spreadsheet.txt</a><span class="txt-meta">Progress: 100%</span></li>
+                    <li class="txt-row"><a href="TournamentInfo/Queen 2025 Main Spreadsheet.txt">Queen 2025 Main Spreadsheet.txt</a><span class="txt-meta">Progress: 100% · Winners printouts: 12</span></li>
+                </ul>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-name">JENNÉA JETER</div>
+            <div class="footer-copy">&copy; 2026 Jennéa Jeter. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            updateThemeToggles();
+        }
+
+        function setThemeMode(mode) {
+            if (mode === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            updateThemeToggles();
+        }
+
+        function updateThemeToggles() {
+            const isDark = document.body.classList.contains('dark-mode');
+            document.querySelectorAll('.settings-theme-option').forEach((btn) => {
+                const shouldBeActive = (btn.dataset.themeOption === 'dark' && isDark)
+                    || (btn.dataset.themeOption === 'light' && !isDark);
+                btn.classList.toggle('active', shouldBeActive);
+            });
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            if (!panel) return;
+            panel.classList.toggle('open');
+        }
+
+        function copyEmail() {
+            navigator.clipboard.writeText('jeterj1@tcnj.edu').then(() => {
+                alert('Email copied!');
+            });
+        }
+
+        updateThemeToggles();
+    </script>
+</body>
+</html>

@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paper Portfolio — Jennéa Jeter</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .papers-shell {
+            padding-top: 1.25rem;
+            padding-bottom: 3rem;
+        }
+
+        .papers-page-title {
+            margin: 0 0 0.3rem;
+            font-family: var(--font-head);
+            font-size: clamp(1.5rem, 3vw, 2.1rem);
+            color: var(--text-main);
+        }
+
+        .papers-page-sub {
+            margin: 0 0 1.1rem;
+            font-family: var(--font-body);
+            color: var(--text-sub);
+            font-size: 0.92rem;
+        }
+
+        .papers-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 310px) minmax(0, 1fr);
+            gap: 1rem;
+            align-items: start;
+        }
+
+        /* ---- sidebar list ---- */
+        .papers-list {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(30,58,95,0.12);
+            border-radius: 14px;
+            padding: 0.7rem;
+            position: sticky;
+            top: 72px;
+            max-height: calc(100vh - 96px);
+            overflow-y: auto;
+        }
+
+        body.dark-mode .papers-list {
+            background: rgba(37,37,37,0.9);
+            border-color: rgba(255,255,255,0.14);
+        }
+
+        .papers-list-btn {
+            width: 100%;
+            text-align: left;
+            border: 1px solid rgba(30,58,95,0.1);
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-main);
+            padding: 0.65rem 0.7rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+            margin-bottom: 0.45rem;
+            white-space: normal;
+        }
+
+        .papers-list-btn:last-child { margin-bottom: 0; }
+
+        .papers-list-btn:hover {
+            border-color: rgba(199,58,164,0.4);
+            background: rgba(199,58,164,0.05);
+        }
+
+        .papers-list-btn.active {
+            border-color: var(--col-magenta);
+            background: rgba(199,58,164,0.09);
+        }
+
+        body.dark-mode .papers-list-btn {
+            border-color: rgba(255,255,255,0.14);
+            color: #f0f0f0;
+        }
+
+        body.dark-mode .papers-list-btn.active {
+            background: rgba(199,58,164,0.22);
+        }
+
+        .plb-title {
+            font-weight: 700;
+            font-size: 0.83rem;
+            line-height: 1.3;
+        }
+
+        .plb-badge {
+            display: inline-block;
+            margin-top: 0.22rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.12rem 0.45rem;
+            border-radius: 999px;
+            background: var(--pill-bg, rgba(30,58,95,0.08));
+            color: var(--pill-fg, var(--text-sub));
+            border: 1px solid var(--pill-border, rgba(30,58,95,0.14));
+        }
+
+        .plb-badge.pdf-badge {
+            background: rgba(199,58,164,0.12);
+            color: var(--col-magenta);
+        }
+
+        /* ---- preview pane ---- */
+        .papers-preview {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(30,58,95,0.12);
+            border-radius: 14px;
+            padding: 0.9rem 0.9rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        body.dark-mode .papers-preview {
+            background: rgba(37,37,37,0.9);
+            border-color: rgba(255,255,255,0.14);
+        }
+
+        .preview-topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .preview-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 0;
+        }
+
+        .preview-title {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .preview-abstract {
+            margin: 0;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            font-family: var(--font-body);
+            max-width: 66ch;
+            line-height: 1.55;
+        }
+
+        .preview-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-shrink: 0;
+        }
+
+        .preview-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.46rem 0.82rem;
+            border-radius: 999px;
+            font-size: 0.76rem;
+            text-decoration: none;
+            border: 1px solid rgba(30,58,95,0.18);
+            color: var(--text-main);
+            background: rgba(30,58,95,0.06);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: background 0.15s, transform 0.15s;
+            white-space: nowrap;
+        }
+
+        .preview-btn:hover {
+            background: rgba(30,58,95,0.13);
+            transform: translateY(-1px);
+        }
+
+        body.dark-mode .preview-btn {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.18);
+            color: #f0f0f0;
+        }
+
+        /* viewer area */
+        .preview-viewer {
+            width: 100%;
+            min-height: 520px;
+            height: calc(100vh - 310px);
+            border: 1px solid rgba(30,58,95,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(30,58,95,0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-viewer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block;
+        }
+
+        .viewer-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-sub);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .viewer-placeholder-icon {
+            font-size: 2.6rem;
+            line-height: 1;
+        }
+
+        .viewer-placeholder-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .viewer-placeholder-body {
+            font-size: 0.82rem;
+            max-width: 38ch;
+            line-height: 1.6;
+        }
+
+        .viewer-notice {
+            font-size: 0.72rem;
+            color: var(--text-sub);
+            opacity: 0.7;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @media (max-width: 900px) {
+            .papers-grid { grid-template-columns: 1fr; }
+            .papers-list { position: static; max-height: none; }
+            .preview-viewer { min-height: 380px; height: 60vh; }
+        }
+
+        @media (max-width: 640px) {
+            .papers-shell {
+                padding-top: 0.95rem;
+                padding-bottom: 2rem;
+            }
+
+            .papers-page-sub {
+                font-size: 0.84rem;
+                margin-bottom: 0.85rem;
+            }
+
+            .papers-list {
+                padding: 0.55rem;
+                border-radius: 12px;
+            }
+
+            .papers-list-btn {
+                padding: 0.58rem 0.62rem;
+                margin-bottom: 0.35rem;
+            }
+
+            .plb-title {
+                font-size: 0.78rem;
+            }
+
+            .plb-badge {
+                font-size: 0.6rem;
+            }
+
+            .papers-preview {
+                padding: 0.7rem;
+                gap: 0.55rem;
+                border-radius: 12px;
+            }
+
+            .preview-title {
+                font-size: 0.92rem;
+            }
+
+            .preview-abstract {
+                font-size: 0.76rem;
+                line-height: 1.45;
+            }
+
+            .preview-actions {
+                width: 100%;
+            }
+
+            .preview-btn {
+                flex: 1 1 0;
+                padding: 0.45rem 0.55rem;
+                font-size: 0.72rem;
+            }
+
+            .preview-viewer {
+                min-height: 300px;
+                height: 54vh;
+            }
+
+            .viewer-placeholder {
+                padding: 1.2rem;
+            }
+
+            .viewer-placeholder-title {
+                font-size: 0.86rem;
+            }
+
+            .viewer-placeholder-body {
+                font-size: 0.74rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .preview-viewer {
+                min-height: 260px;
+                height: 50vh;
+            }
+
+            .papers-list-btn {
+                padding: 0.52rem 0.56rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-sticky">
+        <nav class="main-nav">
+            <div class="logo">
+                <h1><a href="index.html" class="logo-home-link">JENNÉA JETER</a></h1>
+                <div class="logo-subtitle">B.S. in Interactive Multimedia &amp; Psychology</div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-actions">
+                    <a aria-label='Home' class='icon-tile' href='index.html' style='text-decoration:none;' title='Home'>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M3.5 11.2 12 4l8.5 7.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.8 10.5V20h10.4v-9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.1 20v-5h3.8v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <button class="icon-tile icon-email" onclick="copyEmail()" title="Contact">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 8l9 6 9-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <button class="icon-tile icon-settings" onclick="toggleSettings()" title="Open Settings" aria-label="Open Settings">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0 .262 1.081 1.402 1.588 2.387 1.062 1.6-.854 3.368.914 2.514 2.514-.526.985-.019 2.125 1.062 2.387 1.756.426 1.756 2.924 0 3.35-1.081.262-1.588 1.402-1.062 2.387.854 1.6-.914 3.368-2.514 2.514-.985-.526-2.125-.019-2.387 1.062-.426 1.756-2.924 1.756-3.35 0-.262-1.081-1.402-1.588-2.387-1.062-1.6.854-3.368-.914-2.514-2.514.526-.985.019-2.125-1.062-2.387-1.756-.426-1.756-2.924 0-3.35 1.081-.262 1.588-1.402 1.062-2.387-.854-1.6.914-3.368 2.514-2.514.985.526 2.125.019 2.387-1.062Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" stroke="currentColor" stroke-width="1.8"/></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-row">
+            <div class="settings-label">Theme</div>
+            <div class="settings-theme-group" role="group" aria-label="Theme selection">
+                <button class="settings-theme-option" data-theme-option="light" onclick="setThemeMode('light')" aria-label="Light theme" title="Light theme">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+                <button class="settings-theme-option" data-theme-option="dark" onclick="setThemeMode('dark')" aria-label="Dark theme" title="Dark theme">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M21 14.2A9 9 0 1 1 9.8 3c-.1.4-.1.9-.1 1.3a8 8 0 0 0 8 8c.4 0 .9 0 1.3-.1Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container papers-shell">
+        <h2 class="papers-page-title">Paper Portfolio</h2>
+        <p class="papers-page-sub">Select a paper to read it here. Papers are grouped by area (IMM, Psychology, Ethics, and related tracks).</p>
+
+        <section class="papers-grid">
+            <aside class="papers-list" id="papers-list" aria-label="Papers list"></aside>
+
+            <article class="papers-preview" id="papers-preview">
+                <div class="preview-topbar">
+                    <div class="preview-meta">
+                        <h3 class="preview-title" id="preview-title">Select a paper to begin reading</h3>
+                        <p class="preview-abstract" id="preview-abstract"></p>
+                    </div>
+                    <div class="preview-actions" id="preview-actions" style="display:none;">
+                        <a id="preview-open" class="preview-btn" href="#" target="_blank" rel="noopener">Open ↗</a>
+                        <a id="preview-download" class="preview-btn" href="#" download>Download</a>
+                    </div>
+                </div>
+                <div class="preview-viewer" id="preview-viewer">
+                    <div class="viewer-placeholder">
+                        <div class="viewer-placeholder-icon">📖</div>
+                        <div class="viewer-placeholder-title">Choose a paper from the list</div>
+                        <div class="viewer-placeholder-body">PDFs render directly. Word docs are rendered through Google Docs viewer — no download required.</div>
+                    </div>
+                </div>
+                <p class="viewer-notice" id="viewer-notice" style="display:none;"></p>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-name">JENNÉA JETER</div>
+            <div class="footer-copy">&copy; 2026 Jennéa Jeter. All rights reserved. · <a href='/txt-resources' style='color:inherit; text-decoration:underline; text-underline-offset:2px;'>Text Resources</a></div>
+        </div>
+    </footer>
+
+    <script>
+        const papers = [
+            {
+                slug: 'statement-of-purpose',
+                title: 'Statement of Purpose',
+                area: 'Psych',
+                type: 'pdf',
+                path: 'Papers/Jennea Jeter _ Statement of Purpose.pdf',
+                abstract: 'Graduate statement outlining research interests, academic preparation, and long-term goals in psychology and clinical development.'
+            },
+            {
+                slug: 'theoretical-approach',
+                title: 'Theoretical Approach',
+                area: 'Psych',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Theoretical Approach.pdf',
+                abstract: 'Framework-focused writing that connects course concepts to applied interpretation using key scholarly citations and concept mapping.'
+            },
+            {
+                slug: 'adhd-college-students',
+                title: 'Effects of ADHD on College Students',
+                area: 'Psych',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Effects of ADHD on College Students.pdf',
+                abstract: 'Examines ADHD-related academic outcomes in higher education and explores institutional support structures that affect student performance and well-being.'
+            },
+            {
+                slug: 'parenting-outside-binary',
+                title: 'Parenting Outside the Binary',
+                area: 'Psych',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Parenting Outside the Binary.pdf',
+                abstract: 'Critical analysis of identity formation, socialization, and inclusive family frameworks beyond traditional gender and parenting norms.'
+            },
+            {
+                slug: 'work-from-home-job-satisfaction',
+                title: 'Work from Home & Job Satisfaction',
+                area: 'Psych',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Work from Home & Job Satisfaction.pdf',
+                abstract: 'Applied research evaluating remote-work structure and its relationship to perceived workplace satisfaction, autonomy, and productivity outcomes.'
+            },
+            {
+                slug: 'programming-psychology',
+                title: 'Programming Psychology',
+                area: 'IMM',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_CapstoneFall_Programming Psychology.pdf',
+                abstract: 'Capstone manuscript bridging programming concepts, cognitive science, and human behavior design — examining how learning code maps to psychological frameworks.'
+            },
+            {
+                slug: 'sonic-lineage-archive',
+                title: 'Sonic Lineage Archive',
+                area: 'IMM',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Sonic Lineage Archive.pdf',
+                abstract: 'Long-form research paper tracing sonic and cultural lineages through a Black feminist theoretical lens, prepared for academic review and portfolio presentation.'
+            },
+            {
+                slug: 'should-marketing-children-banned',
+                title: 'Should Marketing to Children Be Banned',
+                area: 'Ethics',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Should Marketing to Children Be Banned.pdf',
+                abstract: 'Argumentative paper examining the ethical implications of youth-targeted advertising and the case for regulatory or legislative intervention.'
+            },
+            {
+                slug: 'kardashian-jenner-ethical-lens',
+                title: 'Kardasian-Jenner Empire Ethical Lens',
+                area: 'Ethics',
+                type: 'pdf',
+                path: 'Papers/JenneaJeter_Kardasian-Jenner Empire Ethical Lens.pdf',
+                abstract: 'Ethics-focused analysis of celebrity media influence, brand commerce, and the narrative framing strategies that define mass cultural reach.'
+            }
+        ];
+
+        function slugifyTitle(value) {
+            return (value || '')
+                .toLowerCase()
+                .replace(/&/g, ' and ')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            updateThemeToggles();
+        }
+
+        function setThemeMode(mode) {
+            if (mode === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+            updateThemeToggles();
+        }
+
+        function updateThemeToggles() {
+            const isDark = document.body.classList.contains('dark-mode');
+            // toolbar button (if present)
+            const tb = document.getElementById('theme-toggle-toolbar');
+            if (tb) tb.textContent = isDark ? '☾' : '☀︎';
+            document.querySelectorAll('.settings-theme-option').forEach(btn => {
+                const shouldBeActive = (btn.dataset.themeOption === 'dark' && isDark)
+                    || (btn.dataset.themeOption === 'light' && !isDark);
+                btn.classList.toggle('active', shouldBeActive);
+            });
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            if (!panel) return;
+            panel.classList.toggle('open');
+        }
+
+        function copyEmail() {
+            navigator.clipboard.writeText('jeterj1@tcnj.edu').then(() => {
+                alert('Email copied!');
+            });
+        }
+
+        function fileNameFromPath(p) {
+            const parts = p.split('/');
+            return parts[parts.length - 1] || 'download';
+        }
+
+        function buildViewerSrc(paper) {
+            return { mode: 'pdf', src: encodeURI(paper.path) };
+        }
+
+        const categoryPillColorMap = {};
+
+        function hexToRgba(hex, alpha) {
+            const clean = (hex || '').trim();
+            const full = clean.startsWith('#') ? clean.slice(1) : clean;
+            if (![3, 6].includes(full.length)) return `rgba(30,58,95,${alpha})`;
+
+            const expanded = full.length === 3
+                ? full.split('').map((c) => `${c}${c}`).join('')
+                : full;
+
+            const red = parseInt(expanded.slice(0, 2), 16);
+            const green = parseInt(expanded.slice(2, 4), 16);
+            const blue = parseInt(expanded.slice(4, 6), 16);
+            return `rgba(${red},${green},${blue},${alpha})`;
+        }
+
+        function randomizeCategoryPillColors() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            const accentVarNames = ['red', 'magenta', 'orange', 'green', 'teal', 'navy'];
+            const accentHexes = accentVarNames
+                .map((name) => rootStyles.getPropertyValue(`--col-${name}`).trim())
+                .filter(Boolean);
+
+            const fallbackHexes = ['#ff5757', '#c73aa4', '#e9a34d', '#75af5c', '#00a8a8', '#1e3a5f'];
+            const sourceHexes = accentHexes.length ? accentHexes : fallbackHexes;
+
+            const palette = sourceHexes.map((hex) => ({
+                bg: hexToRgba(hex, 0.14),
+                fg: hex,
+                border: hexToRgba(hex, 0.36)
+            }));
+
+            const categories = Array.from(new Set(papers.map((paper) => (paper.area || 'General'))));
+            const shuffledPalette = [...palette].sort(() => Math.random() - 0.5);
+
+            categories.forEach((category, index) => {
+                categoryPillColorMap[category] = shuffledPalette[index % shuffledPalette.length];
+            });
+        }
+
+        function renderList() {
+            const list = document.getElementById('papers-list');
+            list.innerHTML = '';
+            papers.forEach((paper, index) => {
+                const button = document.createElement('button');
+                button.className = 'papers-list-btn';
+                button.type = 'button';
+                const badgeClass = 'plb-badge';
+                const area = paper.area || 'General';
+                const pillTheme = categoryPillColorMap[area] || { bg: 'rgba(30,58,95,0.08)', fg: 'var(--text-sub)', border: 'rgba(30,58,95,0.14)' };
+                button.innerHTML = `
+                    <div class="plb-title">${paper.title}</div>
+                    <span class="${badgeClass}" style="--pill-bg:${pillTheme.bg}; --pill-fg:${pillTheme.fg}; --pill-border:${pillTheme.border};">${area}</span>
+                `;
+                button.addEventListener('click', () => selectPaper(index));
+                list.appendChild(button);
+            });
+        }
+
+        function selectPaper(index) {
+            const paper = papers[index];
+            if (!paper) return;
+
+            document.querySelectorAll('.papers-list-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+
+            const titleEl = document.getElementById('preview-title');
+            const abstractEl = document.getElementById('preview-abstract');
+            const actionsEl = document.getElementById('preview-actions');
+            const openEl = document.getElementById('preview-open');
+            const downloadEl = document.getElementById('preview-download');
+            const viewerEl = document.getElementById('preview-viewer');
+            const noticeEl = document.getElementById('viewer-notice');
+
+            titleEl.textContent = paper.title;
+            abstractEl.textContent = paper.abstract || '';
+            openEl.href = encodeURI(paper.path);
+            downloadEl.href = encodeURI(paper.path);
+            downloadEl.setAttribute('download', fileNameFromPath(paper.path));
+            actionsEl.style.display = 'inline-flex';
+
+            const { mode, src } = buildViewerSrc(paper);
+
+            viewerEl.innerHTML = `<iframe src="${src}" title="${paper.title}"></iframe>`;
+            noticeEl.style.display = 'none';
+
+            const paperSlug = paper.slug || slugifyTitle(paper.title);
+            const nextUrl = `${window.location.pathname}?paper=${encodeURIComponent(paperSlug)}`;
+            window.history.replaceState({}, '', nextUrl);
+        }
+
+        function findPaperIndexFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const queryPaper = params.get('paper');
+            const hashPaper = (window.location.hash || '').replace('#', '').trim();
+            const targetSlug = (queryPaper || hashPaper || '').trim().toLowerCase();
+            if (!targetSlug) return 0;
+
+            const bySlug = papers.findIndex((paper) => (paper.slug || slugifyTitle(paper.title)) === targetSlug);
+            return bySlug >= 0 ? bySlug : 0;
+        }
+
+        randomizeCategoryPillColors();
+        renderList();
+        selectPaper(findPaperIndexFromUrl());
+        updateThemeToggles();
+    </script>
+</body>
+</html>
