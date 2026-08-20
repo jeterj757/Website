@@ -125,7 +125,7 @@
                                 </p>
                                 <div class="hero-actions">
                                     <button type="button" class="hero-btn hero-btn-primary" onclick="scrollToExperiences()">View Experiences</button>
-                                    <a href="uploads/JenneaJeter_Resume_Fall2026.pdf" target="_blank" rel="noopener" class="hero-btn hero-btn-secondary hero-btn-resume">View Resume</a>
+                                    <a href="uploads/JenneaJeter_DigitalMarketing_Resume.pdf" target="_blank" rel="noopener" class="hero-btn hero-btn-secondary hero-btn-resume">View Resume</a>
                                     <a href="papers.html" class="hero-btn hero-btn-secondary hero-btn-papers hero-btn-papers-row">Read Papers</a>
                                 </div>
                             </div>
@@ -319,7 +319,7 @@
                     <!-- SLIDE 2: IMM Class of 2026 Senior Showcase Ad -->
                     <div class="embed-slide">
                         <div class="embed-frame">
-                            <video controls preload="metadata" playsinline muted>
+                            <video controls preload="metadata" playsinline muted loop>
                                 <source src="uploads/IMM-Class-of-2026-Senior-Showcase-Ad.mp4" type="video/mp4">
                                 Your browser does not support embedded video.
                             </video>
@@ -330,7 +330,7 @@
                     <!-- SLIDE 3: King 2026 Results Video -->
                     <div class="embed-slide">
                         <div class="embed-frame">
-                            <video controls preload="metadata" playsinline muted>
+                            <video controls preload="metadata" playsinline muted loop>
                                 <source src="uploads/King-2026-Results.mp4" type="video/mp4">
                                 Your browser does not support embedded video.
                             </video>
@@ -387,7 +387,7 @@
                     <!-- CLOSING SLIDE: Art, Design & Technology Camp -->
                     <div class="embed-slide">
                         <div class="embed-frame">
-                            <video controls preload="metadata" playsinline muted>
+                            <video controls preload="metadata" playsinline muted loop>
                                 <source src="uploads/ADT-Game-Residential-Wrap-Up-2026.mp4" type="video/mp4">
                                 Your browser does not support embedded video.
                             </video>
@@ -492,7 +492,7 @@
                                             <li>Led weekly lab support on HTML/CSS structure, layout systems, and responsive styling best practices.</li>
                                             <li>Held office-hours debugging sessions and helped students translate wireframes into working page sections.</li>
                                             <li>Reinforced accessibility basics (semantic tags, heading hierarchy, alt text, and color contrast checks).</li>
-                                            <li>Curriculum: <a href="uploads/JenneaJeter_Resume_Fall2026.pdf" target="_blank" rel="noopener">View résumé</a></li>
+                                            <li>Curriculum: <a href="uploads/JenneaJeter_DigitalMarketing_Resume.pdf" target="_blank" rel="noopener">View résumé</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -585,7 +585,7 @@
                                     <li>Created an inclusive camp environment where young people could participate in creative activities, practice social skills, and experience dependable adult support.</li>
                                 </ul>
                                 <div class="camp-video-gallery" aria-label="Resilience summer camp video gallery">
-                                    <video id="resilience-camp-player" class="portfolio-media portfolio-video" controls preload="metadata" playsinline muted autoplay>
+                                    <video id="resilience-camp-player" class="portfolio-media portfolio-video" controls preload="metadata" playsinline muted autoplay loop>
                                         <source src="uploads/Resilience-Camp-IMG-1239-web.mp4#t=13" type="video/mp4">
                                         Your browser does not support embedded video.
                                     </video>
@@ -719,7 +719,7 @@
                                     <li>Authored daily recap communications for 60+ families across Game Design, Comics, and Video Production tracks.</li>
                                     <li>Managed department-card purchases and led orientation planning covering safety and emergency procedures.</li>
                                 </ul>
-                                <video class="portfolio-media portfolio-video" controls preload="metadata" playsinline>
+                                <video class="portfolio-media portfolio-video" controls preload="metadata" playsinline muted loop>
                                     <source src="uploads/ADT-Game-Residential-Wrap-Up-2026.mp4" type="video/mp4">
                                     Your browser does not support embedded video.
                                 </video>
@@ -1989,6 +1989,58 @@
         // =========================================
         // NESTED ACCORDION LOGIC
         // =========================================
+        function suspendVideosWithin(container) {
+            container?.querySelectorAll('video').forEach((video) => {
+                if (!video.paused) video.dataset.resumeWhenVisible = 'true';
+                video.pause();
+                video.muted = true;
+                video.defaultMuted = true;
+            });
+        }
+
+        function resumeVisibleVideosWithin(container) {
+            container?.querySelectorAll('video').forEach((video) => {
+                const rect = video.getBoundingClientRect();
+                const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+                const sufficientlyVisible = visibleHeight > Math.min(80, rect.height * 0.25);
+                if (!sufficientlyVisible || (!video.autoplay && video.dataset.resumeWhenVisible !== 'true')) return;
+                video.muted = true;
+                video.defaultMuted = true;
+                video.play().catch(() => {});
+                delete video.dataset.resumeWhenVisible;
+            });
+        }
+
+        function initializePortfolioVideoLifecycle() {
+            const videos = document.querySelectorAll('video');
+            videos.forEach((video) => {
+                video.loop = true;
+                video.addEventListener('ended', () => {
+                    video.currentTime = 0;
+                    video.play().catch(() => {});
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    const video = entry.target;
+                    if (!entry.isIntersecting || entry.intersectionRatio < 0.25) {
+                        if (!video.paused) video.dataset.resumeWhenVisible = 'true';
+                        video.pause();
+                        video.muted = true;
+                        video.defaultMuted = true;
+                    } else if (video.autoplay || video.dataset.resumeWhenVisible === 'true') {
+                        video.muted = true;
+                        video.defaultMuted = true;
+                        video.play().catch(() => {});
+                        delete video.dataset.resumeWhenVisible;
+                    }
+                });
+            }, { threshold: [0, 0.25, 0.6] });
+
+            videos.forEach((video) => observer.observe(video));
+        }
+
         // Nested accordions: single-open behavior
         function toggleNested(key, options = {}) {
             let item = document.querySelector(`#card-${key}`);
@@ -2005,6 +2057,7 @@
             // Keep other portfolio sections stable; only close a sibling role in this group.
             (accordion?.querySelectorAll('.nested-item.open') || []).forEach(other => {
                 if (other !== item) {
+                    suspendVideosWithin(other);
                     other.classList.remove('open');
                     const otherIcon = other.querySelector('.nested-icon');
                     if (otherIcon) otherIcon.textContent = '›';
@@ -2012,11 +2065,13 @@
             });
 
             if (isOpen) {
+                suspendVideosWithin(item);
                 item.classList.remove('open');
                 if (icon) icon.textContent = '›';
             } else {
                 item.classList.add('open');
                 if (icon) icon.textContent = '‹';
+                requestAnimationFrame(() => resumeVisibleVideosWithin(item));
                 if (!skipAutoScroll) {
                     // Preserve the clicked card's viewport position before the
                     // browser paints the sibling-card layout change.
@@ -3118,6 +3173,7 @@
             initializeCampVideo();
             syncGalleryPositionIndicators();
             initializeEmbedCarousel();
+            initializePortfolioVideoLifecycle();
             initializeClassCardsDefaultState();
             bindTouchpadCarouselScrolling();
             syncMobileNavActionsToScroll();

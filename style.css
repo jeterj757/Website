@@ -1910,7 +1910,7 @@ body.dark-mode .hero-btn-secondary.hero-btn-papers:hover {
     .nav-actions {
         max-height: 48px;
         opacity: 1;
-        overflow: hidden;
+        overflow: visible;
         transform: none;
         transition: none;
     }
