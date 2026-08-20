@@ -27,8 +27,8 @@
     border: 1.5px solid rgba(30,58,95,0.14);
     color: var(--text-main);
     border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem;
+    height: 2.75rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -62,8 +62,8 @@ body.dark-mode .embed-arrow {
     border: 1.5px solid rgba(30,58,95,0.14);
     color: var(--text-main);
     border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem;
+    height: 2.75rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -613,8 +613,8 @@ body.dark-mode .settings-row input[type="range"] {
 }
 
 .settings-theme-option {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 999px;
     border: 1.6px solid rgba(30, 58, 95, 0.35);
     background: transparent;
@@ -1134,7 +1134,7 @@ body.dark-mode .icon-tile.clicked {
 .hero-title-emph {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
-    color: var(--hero-accent, var(--col-magenta));
+    color: var(--hero-accent-dark, #8f245f);
     white-space: nowrap;
 }
 
@@ -1264,7 +1264,7 @@ body.dark-mode .icon-tile.clicked {
 }
 
 .camp-video-choice {
-    min-height: 42px;
+    min-height: 44px;
     padding: 0.55rem 0.7rem;
     display: inline-flex;
     align-items: center;
@@ -1287,7 +1287,7 @@ body.dark-mode .icon-tile.clicked {
 .camp-video-choice[aria-pressed="true"]:hover {
     border-color: var(--col-teal);
     background: var(--col-teal);
-    color: #fff;
+    color: #07111f;
     box-shadow: 0 3px 10px rgba(0, 168, 168, 0.22);
     transform: none;
 }
@@ -1327,6 +1327,7 @@ body.dark-mode .icon-tile.clicked {
     justify-content: center;
     margin: 0.8rem 0 0;
     padding: 0.55rem 1rem;
+    min-height: 44px;
 }
 
 .card-details-toggle:hover,
@@ -1489,7 +1490,7 @@ body.layout-centered .hero-photo {
     box-shadow: none;
     position: relative;
     z-index: 1;
-    color: #fff;
+    color: #07111f;
     padding: 0.88rem 1.15rem;
     font-family: 'Inter', sans-serif;
     text-transform: none;
@@ -1864,7 +1865,7 @@ body.dark-mode .hero-btn-secondary.hero-btn-papers:hover {
         justify-content: center;
         gap: 0.3rem;
         width: 48px;
-        height: 28px;
+        height: 44px;
         padding: 0 0.45rem;
         border: 0;
         border-radius: 999px;
@@ -3275,8 +3276,8 @@ body.dark-mode .class-filter-btn.active {
     gap: 8px;
 }
 .class-link-icon {
-    width: 34px;
-    height: 34px;
+    width: 44px;
+    height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -3370,7 +3371,7 @@ body.dark-mode .class-card:hover {
 /* Footer */
 .site-footer {
     --mind-accent: var(--hero-accent, #E20074);
-    --mind-deep: var(--hero-accent, #E20074);
+    --mind-deep: var(--hero-accent-dark, #8f245f);
     --mind-accent-rgb: var(--hero-accent-rgb, 199,58,164);
     margin-top: 0;
     padding: 2rem 5%;
